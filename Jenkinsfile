@@ -45,6 +45,15 @@ podTemplate(yaml: '''
           path: config.json
 ''') {
   node(POD_LABEL) {
+    stage('Prep') {
+      container('gradle') {
+        stage('Prep Stage') {
+          sh '''   
+          echo env.GIT_BRANCH       
+          '''
+        }
+      }
+    }
     stage('Packager Build a gradle project') {
       git  url: 'https://github.com/dengellive/week7.git' , branch: "main"
       container('gradle') {
