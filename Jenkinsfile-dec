@@ -14,6 +14,7 @@ pipeline {
 				  kubernetes {
                       label 'podlabel'
                       yaml """
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: calculator-deployment
