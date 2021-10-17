@@ -1,6 +1,7 @@
 pipeline {
      agent any
      stages {
+          git url: "https://git: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@github.com/dengellive/week7.git" , branch "main"
           stage("Compile") {
                steps {
                     sh "chmod +x gradlew"
