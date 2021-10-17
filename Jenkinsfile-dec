@@ -7,6 +7,8 @@ pipeline {
 		 stage("Calculator") {
 		  	steps {
                 git  url: 'https://github.com/dengellive/week7.git' , branch: "main"
+				sh "kubectl apply -f hazelcast.yaml"
+				sh "kubectl apply -f calculator.yaml"
                }
           }
           stage("Compile") {
