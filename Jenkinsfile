@@ -48,7 +48,7 @@ podTemplate(yaml: '''
     stage('Prep') {
       container('gradle') {
         stage('Prep Stage') {
-          echo env.GIT_BRANCH
+          echo env.BRANCH_NAME
           sh '''          
           '''
         }
