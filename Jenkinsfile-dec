@@ -12,31 +12,15 @@ pipeline {
 	      }
 		  	agent {
 				  kubernetes {
-                      label 'podlabel'
                       yaml """
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: calculator-deployment
-  labels:
-    app: calculator
 spec:
-  replicas: 3
-  selector:
-    matchLabels:
-      app: calculator
-  template:
-    metadata:
-      labels:
-        app: calculator
-    spec:
-      containers:
-      - name: calculator
-        image: dengel223/hello-kaniko:1.0
-        imagePullPolicy: Always
+	containers:
+    - name: calculator
+    	image: dengel223/hello-kaniko:1.0
+    	imagePullPolicy: Always
         ports:
         - containerPort: 8080
-        """
+"""
                   }
 			  }
                steps {
