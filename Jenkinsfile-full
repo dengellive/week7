@@ -29,59 +29,24 @@ pipeline {
                }
           } 
 
-          stage("Docker build") {
-               steps {
-                    sh "docker build -t dengel223/hello-kaniko:1.0 ."
-               }
-          }
-
-          stage("Docker login") {
-               steps {
-                    withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'docker-hub-credentials',
-                               usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD']]) {
-                         sh "docker login --username $USERNAME --password $PASSWORD"
+          stage("Calculator") {
+               agent {
+                    kubernetes {
+                         yaml '''
+                         spec:
+                           containers:
+                           - name: calculator
+                             image: dengel223/hello-kaniko:1.0
+                             imagePullPolicy: Always
+                             ports:
+                             - containerPort: 8080
+                             ''' 
                     }
                }
-          }
-
-          stage("Docker push") {
                steps {
-                    sh "docker push leszko/calculator:1.0"
+                    echo "I am Calculator"
                }
-          }
-
-          stage("Update version") {
-               steps {
-                    sh "sed  -i 's/{{VERSION}}/1.0/g' calculator.yaml"
-               }
-          }
-          stage("Deploy to staging") {
-               steps {
-                    sh "kubectl config use-context staging"
-                    sh "kubectl apply -f hazelcast.yaml"
-                    sh "kubectl apply -f calculator.yaml"
-               }
-          }
-
-          stage("Acceptance test") {
-               steps {
-                    sleep 60
-                    sh "chmod +x acceptance-test.sh && ./acceptance-test.sh"
-               }
-          }
-
-          stage("Release") {
-               steps {
-                    sh "kubectl config use-context production"
-                    sh "kubectl apply -f hazelcast.yaml"
-                    sh "kubectl apply -f calculator.yaml"
-               }
-          }
-          stage("Smoke test") {
-              steps {
-                  sleep 60
-                  sh "chmod +x smoke-test.sh && ./smoke-test.sh"
-              }
-          }
+               
+          } 
      }
 }
