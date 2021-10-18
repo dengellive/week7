@@ -29,8 +29,8 @@ pipeline {
                          yaml '''
                          spec:
                            containers:
-                           - name: calculator
-                             image: dengel223/hello-kaniko:1.0
+                           - name: calculator-feature
+                             image: dengel223/hello-kaniko:0.1
                              imagePullPolicy: Always
                              ports:
                              - containerPort: 8080
