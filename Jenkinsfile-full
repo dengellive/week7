@@ -7,46 +7,12 @@ pipeline {
                     sh "./gradlew compileJava"
                }
           }
-          stage("Unit test") {
-               steps {
-                    sh "./gradlew test"
-               }
-          }
-          stage("Code coverage") {
-               steps {
-                    sh "./gradlew jacocoTestReport"
-                    sh "./gradlew jacocoTestCoverageVerification"
-               }
-          }
-          stage("Static code analysis") {
-               steps {
-                    sh "./gradlew checkstyleMain"
-               }
-          }
+          
           stage("Package") {
                steps {
                     sh "./gradlew build"
+                    echo "Playgorund branch doesn't do much..."
                }
-          } 
-
-          stage("Calculator") {
-               agent {
-                    kubernetes {
-                         yaml '''
-                         spec:
-                           containers:
-                           - name: calculator
-                             image: dengel223/hello-kaniko:1.0
-                             imagePullPolicy: Always
-                             ports:
-                             - containerPort: 8080
-                             ''' 
-                    }
-               }
-               steps {
-                    echo "I am Calculator"
-               }
-               
           } 
      }
 }
