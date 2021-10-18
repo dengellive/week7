@@ -3,7 +3,6 @@ pipeline {
      stages {
           stage("Compile") {
                steps {
-                    git url: "https://git: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@github.com/dengellive/week7.git" , branch "main"
                     sh "chmod +x gradlew"
                     sh "./gradlew compileJava"
                }
